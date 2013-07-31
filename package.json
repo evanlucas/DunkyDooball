@@ -1,0 +1,30 @@
+{
+  "name": "DunkyDooball",
+  "version": "0.0.1",
+  "description": "Node proxy server and app management system",
+  "main": "./server,js",
+  "scripts": {
+    "test": "./helper.js test"
+  },
+  "repository": "https://github.com/evanlucas/DunkyDooball",
+  "author": "Evan Lucas",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "~0.7.2",
+    "plist": "~0.4.3",
+    "launchctl": "~0.2.4",
+    "json-socket": "~0.1.2",
+    "pkginfo": "~0.3.0",
+    "mongoose": "~3.6.11",
+    "async": "~0.2.9",
+    "express": "~3.2.6",
+    "touch": "0.0.2",
+    "underscore": "~1.4.4",
+    "http-proxy": "~0.10.3",
+    "moment": "~2.0.0",
+    "colors": "~0.6.0-1",
+    "cli-table": "~0.2.0",
+    "loggerjs": "git+https://gitlab.com/evanlucas/loggerjs.git",
+    "commander": "~1.3.2"
+  }
+}
