@@ -1,6 +1,6 @@
 {
   "name": "DunkyDooball",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Node proxy server and app management system",
   "main": "./server,js",
   "scripts": {
