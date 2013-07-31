@@ -1,0 +1,37 @@
+- companyName = (typeof companyName != 'undefined') ? companyName : 'curapps'
+- logoUrl = (typeof logoUrl != 'undefined') ? logoUrl : 'http://localhost:9898/logo_blue.png'
+- cssUrl = (typeof cssUrl != 'undefined') ? cssUrl : 'http://curapps.com/bootstrap/assets/css/bootstrap.css'
+- host = (typeof host != 'undefined') ? host : 'This site'
+!!!
+html
+  head
+    title #{companyName}
+    link(rel='stylesheet', href=cssUrl)
+    style.
+      html, body {
+        text-align:center;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+      }
+      .mainimg {
+        margin-top: 100px;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        color: #555555;
+      }
+      i.hugeicon {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-size: 80px;
+        color: #BBB;
+      }
+  body
+    .mainimg
+      img(src=logoUrl)
+      h3 #{host} is down for maintenance <i class="icon-spin icon-cog"></i>
+      i.hugeicon.icon-ambulance
+      h4 Please try again later.

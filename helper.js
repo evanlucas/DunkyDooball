@@ -19,6 +19,7 @@ program
   .description('Starts the server')
   .action(function() {
     requiresRoot()
+    checkInstall()
     loadPath(appCTLPath)
     loadPath(socketCTLPath)
     console.log('info: '.cyan, 'Successfully started server')
@@ -30,6 +31,7 @@ program
   .description('Restarts the server')
   .action(function() {
     requiresRoot()
+    checkInstall()
     stopWithLabel(socketServerName)
     console.log('info: '.cyan, 'Successfully restarted server')
     process.exit()
@@ -40,10 +42,7 @@ program
   .description('Stops the server and unloads its launchd config files (prevents restarting)')
   .action(function() {
     requiresRoot()
-    try {
-      stopWithLabel(socketServerName)
-    }
-    catch (e) {}
+    checkInstall()
     unloadPath(appCTLPath)
     unloadPath(socketCTLPath)
     console.log('info: '.cyan, 'Successfully stopped server')
@@ -109,17 +108,9 @@ program
   })
 
 program
-  .command('install <env>')
-  .description('Performs a full install')
-  .action(function(env) {
-    requiresRoot()
-    if (!verifyEnv(env)) {
-      console.log('error:'.red, 'Invalid environment')
-      console.log('error:'.red, 'Please specify one of `development`, `test`, or `production`')
-      process.exit(1)
-    }
-    
-    writeConfig(env)
+  .command('create-admin')
+  .description('Creates the admin user')
+  .action(function() {
     console.log()
     console.log('info: '.cyan, 'Beginning admin user setup')
     var user = {};
@@ -145,6 +136,19 @@ program
     })
 
   })
+program
+  .command('install <env>')
+  .description('Performs a full install')
+  .action(function(env) {
+    requiresRoot()
+    if (!verifyEnv(env)) {
+      console.log('error:'.red, 'Invalid environment')
+      console.log('error:'.red, 'Please specify one of `development`, `test`, or `production`')
+      process.exit(1)
+    }
+    
+    writeConfig(env)
+  })
 
 
 program.parse(process.argv)
@@ -165,7 +169,9 @@ function verifyEnv(env) {
 
 function isInstalled() {
   if (!fs.existsSync(appCTLPath)) return false
+  console.log('info: '.cyan, 'com.dunkydooball.server exists')
   if (!fs.existsSync(socketCTLPath)) return false
+  console.log('info: '.cyan, 'com.dunkydooball.socketserver exists')
   return true
 }
 
@@ -178,7 +184,6 @@ function checkInstall() {
 }
 
 function startWithLabel(label) {
-  checkInstall()
   try {
     var res = ctl.startSync(label)
     if (res !== 0) {
@@ -196,7 +201,6 @@ function startWithLabel(label) {
 }
 
 function stopWithLabel(label) {
-  checkInstall()
   try {
     var res = ctl.stopSync(label)
     if (res !== 0) {
@@ -214,36 +218,35 @@ function stopWithLabel(label) {
 }
 
 function unloadPath(p) {
-  checkInstall()
   try {
     var res = ctl.unloadSync(p)
     if (res !== 0) {
-      console.log('error:'.red, 'Error unloading: '+label)
+      console.log('error:'.red, 'Error unloading: '+p)
       var e = ctl.errorFromErrno(res)
       console.log('error:'.red, e)
       throw e
-    }    
+    }
+    fs.unlinkSync(p)
   }
   catch (e) {
-    console.log('error:'.red, 'Error unloading: '+label)
+    console.log('error:'.red, 'Error unloading: '+p)
     console.log('error:'.red, e)
     throw e
   }
 }
 
 function loadPath(p) {
-  checkInstall()
   try {
     var res = ctl.loadSync(p)
     if (res !== 0) {
-      console.log('error:'.red, 'Error loading: '+label)
+      console.log('error:'.red, 'Error loading: '+p)
       var e = ctl.errorFromErrno(res)
       console.log('error:'.red, e)
       throw e
     }    
   }
   catch (e) {
-    console.log('error:'.red, 'Error loading: '+label)
+    console.log('error:'.red, 'Error loading: '+p)
     console.log('error:'.red, e)
     throw e
   }

@@ -19,7 +19,9 @@ var env = process.env.NODE_ENV || 'development'
   , debug = require('debug')('DunkyDooball:DunkyServer')
   , httpProxy = require('http-proxy')
   , logger = require('loggerjs')('DunkyServer')
-  , options = {};
+  , options = {}
+  , jade = require('jade')
+  , path = require('path')
 
 /**
  * Constructor
@@ -64,34 +66,15 @@ DunkyServer.prototype.init = function() {
         var host = req.headers.host || 'This site'
         logger.error('Error proxying request')
         logger.error(err)
-        var index = [
-            ''
-          , '<!DOCTYPE html>'
-          , '<html>'
-          , '<head>'
-          , '  <title>'+config.companyName+'</title>'
-          , '  <link rel="stylesheet" href="'+config.cssUrl+'">'
-          , '  <style>'
-          , '    html, body { text-align: center; margin-left: auto; margin-right: auto; background-color: #ccc;}'
-          , '    .mainimg { margin-top: 100px;}'
-          , '    i { display: block; margin-left: auto; margin-right: auto; text-align: center; font-size: 80px; color: #555555;}'
-          , '  </style>'
-          , '</head>'
-          , '<body>'
-          , '<div class="mainimg">'
-          , '<img src="'+config.logoUrl+'"/>'
-          , ''
-          , '<h3>'
-          , host+' is down for maintenance'
-          , '</h3>'
-          , '<i class="icon-spin icon-cog"></i>'
-          , '<h4>Please try again later.</h4>'
-          , '</div>'
-          , '</body>'
-          , '</html>'
-        ].join("\n")
+        var filename = path.join(path.normalize(__dirname+'/..'), 'config', 'error.jade')
+        var html = jade.renderFile(filename, {
+            companyName: config.companyName
+          , logoUrl: config.logoUrl
+          , cssUrl: config.cssUrl
+          , host: host
+        })
         res.writeHead(200, { 'Content-Type': 'text/html'})
-        res.write(index)
+        res.write(html)
         res.end()
       })
       self.table = self.proxyServer.proxy.proxyTable;
