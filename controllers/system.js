@@ -62,26 +62,26 @@ var getLoadAvg = System.getLoadAvg = function() {
  */
 var getOS = System.getOS = function(cb) {
   var osType = os.type();
-	var release = os.release();
-	var o = {};
-	exec('sw_vers', function(err, stdout, stderr) {
-		if (err) {
-			logger.error('Error getting sw_vers');
-			logger.error(err);
-			return cb && cb(err);
-		}
-		var data = stdout.split("\n");
-		for (var i=0; i<data.length; i++) {
-			var line = data[i];
-			if (line == "") continue;
-			if (matches = line.match(/([\w]+)([:])([\s]+)(.*)/)) {
-				var key = matches[1];
-				var val = matches[4];
-				o[key] = val;
-			}
-		}
-		return cb && cb(null, o);
-	});
+  var release = os.release();
+  var o = {};
+  exec('sw_vers', function(err, stdout, stderr) {
+    if (err) {
+      logger.error('Error getting sw_vers');
+      logger.error(err);
+      return cb && cb(err);
+    }
+    var data = stdout.split("\n");
+    for (var i=0; i<data.length; i++) {
+      var line = data[i];
+      if (line == "") continue;
+      if (matches = line.match(/([\w]+)([:])([\s]+)(.*)/)) {
+        var key = matches[1];
+        var val = matches[4];
+        o[key] = val;
+      }
+    }
+    return cb && cb(null, o);
+  });
 }
 
 /**
