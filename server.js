@@ -77,12 +77,12 @@ socketclient
     /*!
      * Require our configuration
      */
-    require('./config/express')(app, config)
+    var passport = require('./config/express')(app, config)
     
     /*!
      * Setup routes and API
      */
-    require('./config/router')(app, proxyServer, socketclient)
+    require('./config/router')(app, proxyServer, socketclient, passport)
       
     var port = config.adminPort
     

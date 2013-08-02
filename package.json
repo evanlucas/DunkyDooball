@@ -26,6 +26,8 @@
     "cli-table": "~0.2.0",
     "loggerjs": "git+https://gitlab.com/evanlucas/loggerjs.git",
     "commander": "~1.3.2",
-    "jade": "~0.34.1"
+    "jade": "~0.34.1",
+    "passport-local": "~0.1.6",
+    "passport": "~0.1.17"
   }
 }

@@ -11,7 +11,7 @@ var debug = require('debug')('DunkyDooball:API')
   , environment = process.env.NODE_ENV || 'development'
   , config = require('../config/config')[environment]
   , ctl = require('launchctl')
-
+  , async = require('async')
 
 
 /*!
@@ -115,10 +115,20 @@ API.listAll = function(req, res) {
       logger.error(err)
       return res.send(200, error('Error listing apps', err))
     } else {
-      return res.send(200, {
-          status: 'success'
-        , data: result
-      })
+      if (req.query.ui) {
+        return res.send(200, {
+            status: 'success'
+          , data: result
+          , user: {
+              role: req.user.role
+          }
+        })
+      } else {
+        return res.send(200, {
+            status: 'success'
+          , data: result
+        })
+      }
     }
   })
 }
@@ -270,4 +280,125 @@ API.update = function(req, res) {
     logger.info('Successfully updated app')
     return res.send(200, success('Successfully updated app'))
   })
+}
+
+API.getAppsUI = function(req, res) {
+  var sort = {}
+    , skip = 0
+    , limit = 10
+    , cols = ['name', 'port', 'env', 'domains', 'status', 'actions']
+    , output = {};
+
+  if (req.param('iSortCol_0')) {
+    var iSortingCols = Number(req.param('iSortingCols'))
+    for (var i=0; i<iSortingCols; i++) {
+      if (req.param('bSortable_'+req.param('iSortCol_'+i)) == 'true') {
+        var direction = req.param('sSortDir_'+i).toLowerCase()
+        direction = (direction === 'desc') ? 1 : -1
+        sort[cols[Number(req.param('iSortCol_'+i))]] = direction
+      }
+    }
+  }
+
+  if (req.param('iDisplayStart')) skip = req.param('iDisplayStart')
+  if (req.param('iDisplayLength')) limit = req.param('iDisplayLength')
+
+  App
+    .find({})
+    .skip(skip)
+    .limit(limit)
+    .sort(sort)
+    .exec(function(err, apps) {
+      if (err) {
+        logger.error('Error finding apps for DataTables:', err)
+        return res.send(500)
+      }
+      App.count().exec(function(err, count) {
+        if (err) {
+          logger.error('Error counting apps for DataTables:', err)
+          return res.send(500)
+        }
+        output.iTotalRecords = count
+        output.iTotalDisplayRecords = apps.length
+        var aaData = []
+
+        apps.forEach(function(app) {
+          // name, port, env, domains, status, actions
+          try {
+            var c = ctl.listSync(app.label)
+            app.config = c
+          }
+          catch (e) {}
+          var row = []
+          row.push(app.name)
+          row.push(app.port)
+          row.push(envForApp(app))
+          row.push(domainsForApp(app))
+          row.push(statusForApp(app))
+          row.push(actionButtonsForApp(app))
+          aaData.push(row)
+        })
+        output.aaData = aaData
+        output.sEcho = Number(req.param('sEcho'))
+        logger.info('aaData:', aaData)
+        return res.send(200, output)
+      })
+    })
+}
+
+function envForApp(app) {
+  var e = app.env
+    , output = ''
+  switch(e) {
+    case 'development':
+      output = '<span class="label label-success">Development</span>'
+      break
+    case 'test':
+      output = '<span class="label label-success">Test</span>'
+      break
+    case 'production':
+      output = '<span class="label label-success">Production</span>'
+      break
+  }
+  return output
+}
+
+function domainsForApp(app) {
+  var domains = app.domains
+    , output = ''
+  domains.forEach(function(d) {
+    output += '<a href="http://'+d+'">'+d+'</a><br/>'
+  })
+  if (output === '') return '<em>No domains specified</em>'
+  return output
+}
+
+function statusForApp(app) {
+  if (app.config && app.config.PID) {
+    return '<span class="label label-info">Running</span>'
+  }
+  return '<span class="label label-important">Not Running</span>'
+}
+
+function actionButtonsForApp(app) {
+  var output = ''
+  if (app.config && app.config.PID) {
+    // Stop button
+    output += '<a href="#" class="btn btn-danger btn-stop" data-label="'+app.label+'" data-name="'+app.name+'" rel="tooltip" title="Stop App" data-position="top" data-toggle="tooltip" data-trigger="hover"><i class="icon-stop"></i></a>'
+  } else {
+    // Start button
+    output += '<a href="#" class="btn btn-primary btn-start" data-label="'+app.label+'" data-name="'+app.name+'" rel="tooltip" title="Start App" data-position="top" data-toggle="tooltip" data-trigger="hover"><i class="icon-play"></i></a>'
+  }
+  
+  // Install button
+  output += '<a href="#" class="btn btn-success btn-install" data-label="'+app.label+'" data-name="'+app.name+'" rel="tooltip" title="Install Dependencies" data-position="top" data-toggle="tooltip" data-trigger="hover"><i class="icon-terminal"></i></a>'
+  
+  // Update button
+  output += '<a href="#" class="btn btn-warning btn-update" data-label="'+app.label+'" data-name="'+app.name+'" rel="tooltip" title="Update App / Pull Changes" data-position="top" data-toggle="tooltip" data-trigger="hover"><i class="icon-github-alt"></i></a>'
+  
+  // Remove button
+  output += '<a href="#" class="btn btn-danger btn-remove" data-label="'+app.label+'" data-name="'+app.name+'" rel="tooltip" title="Remove App" data-position="top" data-toggle="tooltip" data-trigger="hover"><i class="icon-trash"></i></a>'
+  
+  logger.info('Action Buttons:', output)
+  return output
 }

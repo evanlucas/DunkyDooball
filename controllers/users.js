@@ -144,3 +144,86 @@ Users.authenticate = function(req, res) {
     }
   })
 }
+
+Users.getUsersUI = function(req, res) {
+  var sort = {}
+    , skip = 0
+    , limit = 10
+    , cols = ['name', 'role', 'email', 'createdAt', 'createdBy.name']
+    , output = {};
+
+  if (req.param('iSortCol_0')) {
+    var iSortingCols = Number(req.param('iSortingCols'))
+    for (var i=0; i<iSortingCols; i++) {
+      if (req.param('bSortable_'+req.param('iSortCol_'+i)) == 'true') {
+        var direction = req.param('sSortDir_'+i).toLowerCase()
+        direction = (direction === 'desc') ? 1 : -1
+        sort[cols[Number(req.param('iSortCol_'+i))]] = direction
+      }
+    }
+  }
+
+  if (req.param('iDisplayStart')) skip = req.param('iDisplayStart')
+  if (req.param('iDisplayLength')) limit = req.param('iDisplayLength')
+
+  User
+    .find({})
+    .skip(skip)
+    .limit(limit)
+    .sort(sort)
+    .populate('createdBy')
+    .exec(function(err, users) {
+      if (err) {
+        logger.error('Error finding users for DataTables:', err)
+        return res.send(500)
+      }
+      User.count().exec(function(err, count) {
+        if (err) {
+          logger.error('Error counting users for DataTables:', err)
+          return res.send(500)
+        }
+        output.iTotalRecords = count
+        output.iTotalDisplayRecords = users.length
+        var aaData = []
+
+        users.forEach(function(user) {
+          var row = []
+          var name = user.name || 'N/A'
+          row.push(name)
+          row.push(formatRole(user))
+          row.push(formatEmail(user))
+          row.push(moment(user.createdAt).format('MMM Do, YYYY'))
+          logger.info('user:', user)
+          var u = (user.createdBy && user.createdBy.name) ? user.createdBy.name : 'N/A'
+          row.push(u)
+          row.push(actionButtonsForUser(user, req.user))
+          aaData.push(row)
+        })
+        output.aaData = aaData
+        output.sEcho = Number(req.param('sEcho'))
+        logger.info('aaData:', aaData)
+        return res.send(200, output)
+      })
+    })
+
+}
+
+function formatEmail(user) {
+  return '<a href="mailto:'+user.email+'">'+user.email+'</a>'
+}
+
+function formatRole(user) {
+  return '<span class="user-role" data-role="'+user.role+'">'+user.role+'</span>'
+}
+function actionButtonsForUser(userToEdit, currentUser) {
+  var output = ''
+  if (userToEdit.role === 'Admin' && currentUser.role === 'Management') {
+    return output
+  }
+  // Edit Button
+  output += '<a href="#" data-id="'+userToEdit.id+'" data-name="'+userToEdit.name+'" data-role="'+userToEdit.role+'" class="btn btn-primary btn-edit"><i class="icon-pencil"></i></a>'
+  
+  // Delete Button
+  output += '<a href="#" data-id="'+userToEdit.id+'" class="btn btn-danger btn-delete"><i class="icon-trash"></i></a>'
+  return output
+}

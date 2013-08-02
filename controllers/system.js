@@ -143,6 +143,7 @@ var getNetworkData = System.getNetworkData = function() {
           ips.push({
               ip: ne.address
             , interface: key
+            , family: ne.family
           });
         }
       }
