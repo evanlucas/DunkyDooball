@@ -1,0 +1,239 @@
+body {
+/*   background: url('http://curapps.com/bootstrap/assets/img/419.png') repeat; */
+}
+
+.login {
+  margin-top: 100px;
+}
+
+.header {
+  background: #333;
+  padding-top: 20px;
+  -webkit-box-shadow: 0 0 10px #111;
+  -moz-box-shadow: 0 0 10px #111;
+  box-shadow: 0 0 10px #111;
+  padding-bottom: 20px;
+}
+
+.header hr {
+  border-color: #444;
+}
+
+.header h3 {
+  color: #555555;
+  text-shadow: 2px 0px 4px black;
+}
+
+ul.large-pills {
+  list-style: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.large-pills li {
+  display: inline-block;
+  list-style-type: none;
+}
+
+.large-pills li a {
+  display: block;
+  width: 104px;
+  color: white;
+  min-width: 64px;
+  min-height: 56px;
+  padding: 15px 10px 5px;
+  margin: 20px 10px 10px;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+}
+.large-pills li a:hover {
+  background-color: #086fa1;
+}
+.large-pills .active {
+  background-color: #086fa1;
+  color: white;
+}
+.large-pills li a i {
+  font-size: 40px;
+  text-decoration: none;
+}
+
+.value {
+  font-size: 40px;
+  line-height: 40px;
+  font-weight: bold;
+  color: #999;
+  vertical-align: middle;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.value.value-small {
+  font-size: 25px;
+  line-height: 25px;
+}
+
+.value.value-mini {
+  font-size: 18px;
+  line-height: 18px;
+}
+
+span.freemem,
+span.totalmem {
+  margin-left: 3px;
+  display: inline;
+}
+
+span.divider {
+  color: #555;
+  display: inline;
+  margin-left: 3px;
+}
+
+.sect i {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 90px;
+}
+
+.sect h4 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 8px;
+}
+
+.sect {
+  margin-bottom: 20px;
+}
+
+i.error {
+  color: #d9534f;
+}
+i.warning {
+  color: #d38b1f;
+}
+
+.mainContent {
+  margin-top: 100px;
+}
+i.giganticIcon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 200px;
+}
+
+.app {
+  border: 1px solid #ccc;
+}
+
+.app .app-title {
+  border-bottom: 1px solid #ccc;
+  background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f1f1f1));
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f1f1f1 100%);
+  background: -o-linear-gradient(top, #ffffff 0%, #f1f1f1 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #f1f1f1 100%);
+}
+
+.app .app-title h4 {
+  margin-left: 5px;
+}
+
+.app .app-body {
+  margin: 5px;
+  text-align: center;
+}
+
+.app .app-body p {
+  margin: 0;
+}
+
+.app .app-footer {
+  border-top: 1px solid #ccc;
+}
+
+.app .app-footer button,
+.app .app-footer a {
+  margin: 5px;
+}
+
+.dataTables_length {
+  margin-bottom: 5px;
+}
+.dataTables_length,
+.dataTables_info {
+  margin-left: 5%;
+}
+
+.dataTables_paginate {
+  margin-right: 5%;
+}
+
+/*
+.dataTables_info {
+  margin-top: 10px;
+}
+*/
+
+.dataTables_paginate .pagination {
+  margin: 0;
+}
+
+.btn-stop,
+.btn-start,
+.btn-install,
+.btn-update,
+.btn-remove,
+.btn-edit,
+.btn-delete {
+  margin-left: 5px;
+}
+
+th i {
+  float: right;
+}
+
+th {
+  cursor: pointer;
+}
+
+.spinner_parent {
+  width: 80px;
+}
+
+.chart .percentage {
+  display: block;
+  margin: 5px 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.chart .percentage:before,
+.chart .percentage:after {
+  display: table;
+  content: " ";
+}
+
+.chart .percentage:after {
+  clear: both;
+}
+
+.chart .label {
+  display: block;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  line-height: 1.1;
+}

@@ -74,11 +74,24 @@ socketclient
 
     app.config = config
     
+    
+    /**
+     * Create separate http server for the sake of socket.io
+     */
+    var server = require('http').createServer(app);
+    
+    /**
+     * Start listening for socket messages
+     */
+    var io = require('socket.io').listen(server);
+    
     /*!
      * Require our configuration
      */
-    var passport = require('./config/express')(app, config)
+    var exp = require('./config/express')(app, config, io)
     
+    var passport = exp.passport
+      , socks = exp.socks
     /*!
      * Setup routes and API
      */
@@ -89,7 +102,9 @@ socketclient
     /*!
      * Start listening
      */  
-    app.listen(port)
+    server.listen(port)
+    
+    require('./config/sockets')(socks)
     
     logger.info('['+env+'] - Listening on port ['+port+']')
   })

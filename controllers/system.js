@@ -33,6 +33,9 @@ var getUptime = System.getUptime = function() {
   return hours+' hrs. '+mins+' mins.'
 }
 
+var getCPUCount = System.getCPUCount = function() {
+  return os.cpus().length
+}
 /*!
  * Gets the total memory in GB
  */

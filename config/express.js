@@ -10,11 +10,16 @@ var express = require('express')
   , User = mongoose.model('User')
   , env = process.env.NODE_ENV || 'development'
   , config = require('./config')[env]
+  , secret = 'dunkydooballsecret'
+  , RedisStore = require('connect-redis')(express)
+  , redis = require('redis').createClient()
+  , cookieParser = express.cookieParser(secret)
+  , sessionStore = new RedisStore({ client: redis })
 
 /*!
  * Module's exports
  */
-module.exports = function(app, config) {
+module.exports = function(app, config, io) {
   
   if (config.enableUI) {
     passport.serializeUser(function(user, done) {
@@ -52,7 +57,14 @@ module.exports = function(app, config) {
   app.configure(function(){
     app.use(express.cookieParser());
     
-    if (config.enableUI) app.use(express.session({secret: 'dunkydooball'}))
+    if (config.enableUI) {
+      app.use(express.session({
+          secret: secret
+        , maxAge: new Date(Date.now()+1400000)
+        , store: sessionStore
+      }))
+      app.use(cookieParser)
+    }
     
     app.use(express.bodyParser());
     app.use(express.methodOverride());
@@ -76,6 +88,10 @@ module.exports = function(app, config) {
       })
     });
   });
-  
-  return passport
+  var SessionSockets = require('session.socket.io')
+    , sessionSockets = new SessionSockets(io, sessionStore, cookieParser)
+  return {
+      passport: passport
+    , socks: sessionSockets
+  };
 }

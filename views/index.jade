@@ -1,0 +1,89 @@
+- data = (typeof data != 'undefined') ? data : {}
+- profile = (typeof profile != 'undefined') ? profile : {}
+extends default
+include mixins
+
+block extraStyles
+  mixin css('/jquery.easy-pie-chart/jquery.easy-pie-chart.css')
+block mainContent
+  .header
+    .container-fluid
+      .row-fluid
+        img(src=logoUrl).pull-left.logo
+        h3(style='text-align: right;').pull-right Dunky Dooball
+      .clearfix
+      hr
+      ul.large-pills
+        li
+          a(href='/').active
+            i.icon-home
+            br
+            | Home
+        li
+          a(href='/network')
+            i.icon-signal
+            br
+            | Network
+        li
+          a(href='/apps')
+            i.icon-sitemap
+            br
+            | Apps
+        - if (profile.role && profile.role === 'Admin')
+          li
+            a(href='/users')
+              i.icon-group
+              br
+              | Users
+      .clearfix
+  .mainContent
+    .container
+      .span12
+        .row
+          .span4.sect
+            h4 Operating System
+            i.icon-apple
+            .value.value-small
+              span(style='font-size: 14px; line-height: 14px;') #{data.hostname} <br/>
+              | #{data.os.ProductVersion} (#{data.os.BuildVersion}) <br/>
+              | #{data.arch} <br/>
+          .span4.sect
+            h4 Processors
+            i.icon-fighter-jet
+            br
+            .value.value-small
+              | #{data.cores} Cores <br/>
+              | #{data.cpuSpeed} GHz <br/>
+          .span4.sect
+            h4 Load Average
+            i.icon-bar-chart
+            br
+            .value.value-small.loadavg #{data.loadavg}
+        .row
+          .span4.sect
+            h4 Node Version
+            i.icon-wrench
+            br
+            .value.value-small #{data.nodeversion}
+          .span4.sect
+            h4 Uptime
+            i.icon-time
+            br
+            .value.value-small #{data.uptime.formatted}
+          .span4.sect
+            h4 Free Memory
+            .chart.memory
+              - percent = (data.memory.freemem / data.memory.totalmem) * 100
+              .percentage(data-percent=percent)
+                span #{percent*100}
+                | %
+              .value.mem.value-small
+                span.freemem #{data.memory.freemem} MB
+                span.divider /
+                span.totalmem #{data.memory.totalmem} MB
+            
+
+block extraScripts
+  mixin js('/socket.io/socket.io.js')
+  mixin js('/jquery.easy-pie-chart/jquery.easy-pie-chart.js')
+  mixin js('/js/index.js')

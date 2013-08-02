@@ -1,0 +1,63 @@
+- profile = (typeof profile != 'undefined') ? profile : {}
+extends default
+block extraStyles
+  link(rel='stylesheet', href='/alertify.js/themes/alertify.core.css')
+  link(rel='stylesheet', href='/alertify.js/themes/alertify.default.css')
+block mainContent
+  .header
+    .container-fluid
+      .row-fluid
+        img(src=logoUrl).pull-left.logo
+        h3(style='text-align: right;').pull-right Dunky Dooball
+        .spinner_parent.pull-right
+      .clearfix
+      hr
+      ul.large-pills
+        li
+          a(href='/')
+            i.icon-home
+            br
+            | Home
+        li
+          a(href='/network')
+            i.icon-signal
+            br
+            | Network
+        li
+          a(href='/apps').active
+            i.icon-sitemap
+            br
+            | Apps
+        - if (profile.role && profile.role === 'Admin')
+          li
+            a(href='/users')
+              i.icon-group
+              br
+              | Users
+      .clearfix
+  .mainContent
+    .container-fluid
+      h3 Apps
+      table.table.table-bordered
+        thead
+          th Name
+            i
+          th Port
+            i
+          th Environment
+            i
+          th Domains
+          th Status
+            i
+          th(style='width: 200px; min-width: 189px;') Actions
+        tbody
+  .clearfix
+  br
+  br
+block extraScripts
+  script(type='text/javascript', src='/socket.io/socket.io.js')
+  script(type='text/javascript', src='/DataTables/media/js/jquery.dataTables.js')
+  script(type='text/javascript', src='/alertify.js/lib/alertify.js')
+  script(type='text/javascript', src='/spin.js/spin.js')
+  script(type='text/javascript', src='/js/helper.js')
+  script(type='text/javascript', src='/js/apps.js')

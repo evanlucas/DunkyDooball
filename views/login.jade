@@ -1,0 +1,27 @@
+extends default
+
+block mainContent
+  .header
+    .container-fluid
+      .row-fluid
+        img(src=logoUrl).pull-left.logo
+        h3(style='text-align: right;').pull-right Dunky Dooball
+      .clearfix
+      hr
+  .container
+    .row-fluid
+      .login
+        form.form-signin(action='/login', method='post')
+          h3 Login
+          .control-group
+            label.control-label Email
+            .controls
+              input(type='text', placeholder='Email', name='username').input-block-level
+          .control-group
+            label.control-label Password
+            .controls
+              input(type='password', placeholder='Password', name='password').input-block-level
+          .control-group
+            button#submitBtn(type='submit').btn.btn-primary.btn-large Login
+
+block extraScripts

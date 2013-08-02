@@ -1,0 +1,48 @@
+- data = (typeof data != 'undefined') ? data : {}
+- profile = (typeof profile != 'undefined') ? profile : {}
+extends default
+
+block mainContent
+  .header
+    .container-fluid
+      .row-fluid
+        img(src=logoUrl).pull-left.logo
+        h3(style='text-align: right;').pull-right Dunky Dooball
+      .clearfix
+      hr
+      ul.large-pills
+        li
+          a(href='/')
+            i.icon-home
+            br
+            | Home
+        li
+          a(href='/network').active
+            i.icon-signal
+            br
+            | Network
+        li
+          a(href='/apps')
+            i.icon-sitemap
+            br
+            | Apps
+        - if (profile.role && profile.role === 'Admin')
+          li
+            a(href='/users')
+              i.icon-group
+              br
+              | Users
+      .clearfix
+  .mainContent
+    .container
+      .span12
+        h3 Network
+        table.table.table-bordered
+          - each ip, index in data
+            tr
+              th(style='font-size: 20px;') Address
+              td(style='font-size: 20px;') #{ip.ip}
+              th(style='font-size: 20px;') Interface
+              td(style='font-size: 20px;') #{ip.interface}
+              th(style='font-size: 20px;') Family
+              td(style='font-size: 20px;') #{ip.family}

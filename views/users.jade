@@ -1,0 +1,83 @@
+- profile = (typeof profile != 'undefined') ? profile : {}
+extends default
+block extraStyles
+  link(rel='stylesheet', href='/alertify.js/themes/alertify.core.css')
+  link(rel='stylesheet', href='/alertify.js/themes/alertify.default.css')
+block mainContent
+  .header
+    .container-fluid
+      .row-fluid
+        img(src=logoUrl).pull-left.logo
+        h3(style='text-align: right;').pull-right Dunky Dooball
+        .spinner_parent.pull-right
+      .clearfix
+      hr
+      ul.large-pills
+        li
+          a(href='/')
+            i.icon-home
+            br
+            | Home
+        li
+          a(href='/network')
+            i.icon-signal
+            br
+            | Network
+        li
+          a(href='/apps')
+            i.icon-sitemap
+            br
+            | Apps
+        - if (profile.role && profile.role === 'Admin')
+          li
+            a(href='/users').active
+              i.icon-group
+              br
+              | Users
+      .clearfix
+  .mainContent
+    .container-fluid
+      h3 Users
+      table.table.table-bordered
+        thead
+          th Name
+            i
+          th Role
+            i
+          th Email
+            i
+          th Created
+            i
+          th Created By
+            i
+          th Actions
+        tbody
+  .clearfix
+  .modal.hide.fade.editUserModal
+    .modal-header
+      button(type='button', data-dismiss='modal', class='close') x
+      h3 Edit User
+    .modal-body
+      form.form.form-horizontal
+        .control-group
+          label.control-label Name
+          .controls
+            input(type='text', name='textName', disabled).disabled
+        .control-group
+          label.control-label Role
+          .controls
+            select(name='selectRole')
+              option(value='User') User
+              option(value='Management') Management
+              option(value='Admin') Admin
+    .modal-footer
+      button(type='button').btn-save.btn.btn-primary Save
+      button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
+  br
+  br
+block extraScripts
+  script(type='text/javascript', src='/DataTables/media/js/jquery.dataTables.js')
+  script(type='text/javascript', src='/alertify.js/lib/alertify.js')
+  script(type='text/javascript', src='/spin.js/spin.js')
+  script(type='text/javascript', src='/js/helper.js')
+  script(type='text/javascript', src='/js/users.js')
