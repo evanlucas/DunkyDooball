@@ -9,13 +9,10 @@ var logger = require('loggerjs')('Sockets')
   , User = mongoose.model('User')
   , App = mongoose.model('App')
   , sys = require('../controllers/system')
+  , ResetPassword = mongoose.model('ResetPass')
 
 var getUserFromSession = function(session, cb) {
   User.findById(session.passport.user, cb)
-}
-
-var generatePass = function() {
-  
 }
 
 var createUser = function(data, socket, session) {
@@ -35,7 +32,27 @@ var createUser = function(data, socket, session) {
       u.email = data.email
       u.apiKey = u.generateAPIKey(new Date())
       u.role = data.role || 'User'
-      u.password = generatePass()
+      u.requiresChange = true
+      // Generate a reset token
+      var p = new ResetPassword({email: data.email})
+      p.token = p.generateToken(new Date())
+      u.save(function(err) {
+        if (err) {
+          logger.error('Error saving user:', err)
+          return socket.emit('createUserError', 'Error creating user')
+        } else {
+          p.save(function(err, resetPass) {
+            if (err) {
+              logger.error('Error creating password token:', err)
+              return socket.emit('createUserError', 'Error creating user')
+            } else {
+              // Send password reset email
+              var token = resetPass.token
+              
+            }
+          })
+        }
+      })
     }
   })
 }

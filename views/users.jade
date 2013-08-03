@@ -53,9 +53,19 @@ block mainContent
           th Actions
         tbody
   .clearfix
+  .modal.hide.fade.deleteUserModal
+    .modal-header
+      button(type='button', data-dismiss='modal').close x
+      h3 Delete User
+    .modal-body
+      p Are you sure you want to delete <span class="user-name"></span>?
+      p This cannot be undone.
+    .modal-footer
+      button(type='button').btn-delete.btn.btn-danger Delete
+      button(type='button', data-dismiss='modal').btn-cancel.btn-primary.btn Cancel
   .modal.hide.fade.editUserModal
     .modal-header
-      button(type='button', data-dismiss='modal', class='close') x
+      button(type='button', data-dismiss='modal').close x
       h3 Edit User
     .modal-body
       form.form.form-horizontal

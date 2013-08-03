@@ -36,10 +36,8 @@ var error = function(msg, err) {
 
 function requiresAuthUI(req, res, next) {
   if (!req.isAuthenticated()) {
-    logger.info('!req.isAuthenticated()')
     return res.redirect('/login')
   }
-  logger.info('req.isAuthenticated()')
   next()
 }
 

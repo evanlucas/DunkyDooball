@@ -399,6 +399,5 @@ function actionButtonsForApp(app) {
   // Remove button
   output += '<a href="#" class="btn btn-danger btn-remove" data-label="'+app.label+'" data-name="'+app.name+'" rel="tooltip" title="Remove App" data-position="top" data-toggle="tooltip" data-trigger="hover"><i class="icon-trash"></i></a>'
   
-  logger.info('Action Buttons:', output)
   return output
 }

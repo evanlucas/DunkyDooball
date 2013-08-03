@@ -221,9 +221,9 @@ function actionButtonsForUser(userToEdit, currentUser) {
     return output
   }
   // Edit Button
-  output += '<a href="#" data-id="'+userToEdit.id+'" data-name="'+userToEdit.name+'" data-role="'+userToEdit.role+'" class="btn btn-primary btn-edit"><i class="icon-pencil"></i></a>'
+  output += '<a href="#" data-id="'+userToEdit.id+'" data-name="'+userToEdit.name+'" data-role="'+userToEdit.role+'" class="btn btn-primary btn-edit" title="Edit User" rel="tooltip" data-position="top" data-trigger="hover"-><i class="icon-pencil"></i></a>'
   
   // Delete Button
-  output += '<a href="#" data-id="'+userToEdit.id+'" class="btn btn-danger btn-delete"><i class="icon-trash"></i></a>'
+  output += '<a href="#" data-id="'+userToEdit.id+'" class="btn btn-danger btn-delete" title="Delete User" rel="tooltip" data-position="top" data-trigger="hover"><i class="icon-trash"></i></a>'
   return output
 }

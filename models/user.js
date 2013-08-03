@@ -10,7 +10,8 @@ var UserSchema = new Schema({
   apiKey: { type: String, unique: true},
   role: { type: String, enum: ['Admin', 'Management', 'User'], default: 'User'},
   createdAt: { type: Date, default: Date.now },
-  createdBy: { type: Schema.ObjectId, ref: 'User' }
+  createdBy: { type: Schema.ObjectId, ref: 'User' },
+  requiresChange: { type: Boolean, default: false }
 })
 
 

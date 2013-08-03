@@ -31,10 +31,9 @@ $(document).ready(function() {
     e.preventDefault()
   })
   
-  $('body').on('click', '.btn-delete', function(e) {
+  $('.deleteUserModal .btn-delete').on('click', function(e) {
     
   })
-  
   
   /*
 
