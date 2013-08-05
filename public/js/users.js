@@ -100,7 +100,7 @@ $(document).ready(function() {
   $('.deleteUserModal').on('hide', function() {
     $('.deleteUserModal .span-name').text('')
     $('.deleteUserModal input[name=hiddenID]').val('')
-  }
+  })
   /**
    * Socket handlers
    */
