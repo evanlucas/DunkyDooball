@@ -3,3 +3,9 @@ mixin js(p)
 
 mixin css(p)
   link(rel='stylesheet', href=p)
+
+mixin tf(name, label)
+  .control-group
+    label.control-label #{label}
+    .controls
+      input(type='text', name=name)
