@@ -20,6 +20,7 @@ module.exports = {
     cssUrl: 'http://curapps.com/cbootstrap/assets/css/style.css',
     logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png',
     enableUI: true,
+    supportEmail: 'support@curapps.com',
     mailTransport: {
       method: "Sendmail",
       config: "/usr/sbin/sendmail"
@@ -53,6 +54,7 @@ module.exports = {
     cssUrl: 'http://curapps.com/cbootstrap/assets/css/style.css',
     logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png',
     enableUI: true,
+    supportEmail: 'support@curapps.com',
     mailTransport: {
       method: "Sendmail",
       config: "/usr/sbin/sendmail"
@@ -86,6 +88,7 @@ module.exports = {
     cssUrl: 'http://curapps.com/cbootstrap/assets/css/style.css',
     logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png',
     enableUI: true,
+    supportEmail: 'support@curapps.com',
     mailTransport: {
       method: "Sendmail",
       config: "/usr/sbin/sendmail"
