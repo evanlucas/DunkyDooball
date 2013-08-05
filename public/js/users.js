@@ -1,5 +1,6 @@
 var dt;
 $(document).ready(function() {
+  var socket = io.connect('/')
   dt = $('table').dataTable({
       bProcessing: false
     , bServerSide: true
@@ -13,6 +14,12 @@ $(document).ready(function() {
     }
   })
   
+  $('.dtbtngroup').append('<button type="button" class="btn btn-primary btn-addUser pull-right"><i class="icon-plus"></i>  Create User</button>')
+  
+  $('body').on('click', '.btn-addUser', function(e) {
+    $('.createUserModal').modal('show')
+  })
+  
   $('body').on('click', '.btn-edit', function(e) {
     var self = $(this)
       , id = self.data('id')
@@ -20,93 +27,108 @@ $(document).ready(function() {
       , role = self.data('role')
     $('.editUserModal input[name=textName]').val(name)
     $('.editUserModal select[name=selectRole]').val(role)
+    $('.editUserModal input[name=hiddenID]').val(id)
     $('.editUserModal').modal('show')
+  })
+  
+  $('body').on('click', '.btn-delete', function(e) {
+    var self = $(this)
+      , id = self.data('id')
+      , name = self.data('name')
+    $('.deleteUserModal .user-name').text(name)
+    $('.deleteUserModal input[name=hiddenID]').val(id)
+    $('.deleteUserModal').modal('show')
+  })
+  
+  $('.editUserModal .btn-save').on('click', function(e) {
+    e.preventDefault()
+    var id = $('.editUserModal input[name=hiddenID]').val()
+    var role = $('.editUserModal select[name=selectRole]').val()
+    socket.emit('editUser', {
+        id: id
+      , role: role
+    })
+    $('.editUserModal').modal('hide')
   })
   
   $('.editUserModal').on('hide', function() {
     $('.editUserModal input[name=textName]').val('')
+    $('.editUserModal input[name=hiddenID]').val('')
+    $('.editUserModal select[name=selectRole]').val('User')
+  })
+
+  
+  $('.createUserModal .btn-save').on('click', function(e) {
+    e.preventDefault()
+    var name = $('.createUserModal input[name=textName]')
+    if (name.val() === "") {
+      name.closest('.control-group').addClass('error')
+      return false
+    } else {
+      name.closest('.control-group').removeClass('error')
+    }
+    var email = $('.createUserModal input[name=textEmail]')
+    if (email.val() === "") {
+      email.closest('.control-group').addClass('error')
+      return false
+    } else {
+      email.closest('.control-group').removeClass('error')
+    }
+    var role = $('.createUserModal select[name=selectRole]')
+    socket.emit('createUser', {
+        name: name.val()
+      , email: email.val()
+      , role: role.val()
+    })
+    $('.createUserModal').modal('hide')
   })
   
-  $('.btn-save').on('click', function(e) {
-    e.preventDefault()
+  $('.createUserModal').on('hide', function() {
+    $('.createUserModal input[name=textName]').val('')
+    $('.createUserModal input[name=textEmail]').val('')
+    $('.createUserModal select[name=selectRole]').val('User')
   })
   
   $('.deleteUserModal .btn-delete').on('click', function(e) {
-    
+    var id = $('.deleteUserModal input[name=hiddenID]').val()
+    socket.emit('deleteUser', {
+      id: id
+    })
+    $('.deleteUserModal').modal('hide')
   })
   
-  /*
-
-  $('body').on('click', '.btn-stop', function(e) {
-    var name = $(this).data('name')
-      , self = $(this)
-    showSpinner()
-    $.post('/api/apps/'+name+'/stop', function(data) {
-      if (data.status && data.status === 'success') {
-        alertify.success(data.msg)
-        setTimeout(function() {
-          dt.fnDraw()
-        }, 800)
-      } else {
-        alertify.error('Error stopping app')
-        hideSpinner()
-      }
-    })
-    return false;
+  $('.deleteUserModal').on('hide', function() {
+    $('.deleteUserModal .span-name').text('')
+    $('.deleteUserModal input[name=hiddenID]').val('')
+  }
+  /**
+   * Socket handlers
+   */
+  
+  socket.on('createUserError', function(msg) {
+    alertify.error(msg)
   })
   
-  $('body').on('click', '.btn-install', function(e) {
-    var name = $(this).data('name')
-      , self = $(this)
-    showSpinner()
-    $.post('/api/apps/'+name+'/install', function(data) {
-      if (data.status && data.status === 'success') {
-        alertify.success(data.msg)
-        setTimeout(function() {
-          dt.fnDraw()
-        }, 300)
-      } else {
-        alertify.error('Error installing dependencies')
-        hideSpinner()
-      }
-    })
-    return false
+  socket.on('createUserSuccess', function(msg) {
+    alertify.success(msg)
+    dt.fnDraw()
   })
   
-  $('body').on('click', '.btn-update', function(e) {
-    var name = $(this).data('name')
-      , self = $(this)
-    showSpinner()
-    $.post('/api/apps/'+name+'/pull', function(data) {
-      if (data.status && data.status === 'success') {
-        alertify.success(data.msg)
-        setTimeout(function() {
-          dt.fnDraw()
-        }, 300)
-      } else {
-        alertify.error('Error updating app')
-        hideSpinner()
-      }
-    })
-    return false
+  socket.on('editUserError', function(msg) {
+    alertify.error(msg)
   })
   
-  $('body').on('click', '.btn-start', function(e) {
-    var name = $(this).data('name')
-      , self = $(this)
-    showSpinner()
-    $.post('/api/apps/'+name+'/start', function(data) {
-      if (data.status && data.status === 'success') {
-        alertify.success(data.msg)
-        setTimeout(function() {
-          dt.fnDraw()
-        }, 300)
-      } else {
-        alertify.error('Error starting app')
-        hideSpinner()
-      }
-    })
-    return false
+  socket.on('editUserSuccess', function(msg) {
+    alertify.success(msg)
+    dt.fnDraw()
   })
-*/
+  
+  socket.on('deleteUserError', function(msg) {
+    alertify.error(msg)
+  })
+  
+  socket.on('deleteUserSuccess', function(msg) {
+    alertify.success(msg)
+    dt.fnDraw()
+  })
 })
