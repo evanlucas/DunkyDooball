@@ -17,8 +17,23 @@ module.exports = {
     companyID: 'com.curapps',
     nodePath: '/usr/local/bin/node',
     companyName: 'curapps',
-    cssUrl: 'http://curapps.com/bootstrap/assets/css/bootstrap.css',
-    logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png'
+    cssUrl: 'http://curapps.com/cbootstrap/assets/css/style.css',
+    logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png',
+    enableUI: true,
+    mailTransport: {
+      method: "Sendmail",
+      config: "/usr/sbin/sendmail"
+    }
+/*    mailTransport: {
+      method: 'SMTP',
+      config: {
+        auth: {
+          user: "",
+          pass: ""
+        }
+      }
+    }
+*/
   },
   test: {
     domain: 'curapps.com',
@@ -35,8 +50,23 @@ module.exports = {
     companyID: 'com.curapps',
     nodePath: '/usr/local/bin/node',
     companyName: 'curapps',
-    cssUrl: 'http://curapps.com/bootstrap/assets/css/bootstrap.css',
-    logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png'
+    cssUrl: 'http://curapps.com/cbootstrap/assets/css/style.css',
+    logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png',
+    enableUI: true,
+    mailTransport: {
+      method: "Sendmail",
+      config: "/usr/sbin/sendmail"
+    }
+/*    mailTransport: {
+      method: 'SMTP',
+      config: {
+        auth: {
+          user: "",
+          pass: ""
+        }
+      }
+    }
+*/
   },
   production: {
     domain: 'curapps.com',
@@ -53,7 +83,22 @@ module.exports = {
     companyID: 'com.curapps',
     nodePath: '/usr/local/bin/node',
     companyName: 'curapps',
-    cssUrl: 'http://curapps.com/bootstrap/assets/css/bootstrap.css',
-    logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png'
+    cssUrl: 'http://curapps.com/cbootstrap/assets/css/style.css',
+    logoUrl: 'http://curapps.com/bootstrap/assets/img/logo.png',
+    enableUI: true,
+    mailTransport: {
+      method: "Sendmail",
+      config: "/usr/sbin/sendmail"
+    }
+/*    mailTransport: {
+      method: 'SMTP',
+      config: {
+        auth: {
+          user: "",
+          pass: ""
+        }
+      }
+    }
+*/
   }
 };
