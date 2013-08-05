@@ -190,6 +190,10 @@ i.giganticIcon {
   margin: 0;
 }
 
+h3.dt {
+  margin-left: 2.5%;
+}
+
 .btn-stop,
 .btn-start,
 .btn-install,
