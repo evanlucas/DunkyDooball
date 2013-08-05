@@ -32,6 +32,7 @@
     "redis": "~0.8.4",
     "connect-redis": "~1.4.5",
     "session.socket.io": "~0.1.6",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "nodemailer": "~0.5.2"
   }
 }
