@@ -47,6 +47,14 @@ UserSchema.method('generateAPIKey', function(date) {
   return crypto.createHash('sha1').update(d+ran).digest('hex')
 })
 
+UserSchema.method('generatePassword', function(date) {
+  var d = (date).valueOf().toString()
+  var ran = Math.random().toString()
+  var res = crypto.createHash('sha1').update(d+ran).digest('hex')
+  var p = res.substr(0, 12)
+  return p
+})
+
 UserSchema.method('authenticate', function(p) {
   return this.encryptPassword(p) === this.hashed_password
 })
