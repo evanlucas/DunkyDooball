@@ -4,8 +4,8 @@ mixin js(p)
 mixin css(p)
   link(rel='stylesheet', href=p)
 
-mixin tf(name, label)
+mixin tf(name, label, placeholder)
   .control-group
     label.control-label #{label}
     .controls
-      input(type='text', name=name)
+      input(type='text', name=name, placeholder=placeholder)
