@@ -10,6 +10,7 @@ var logger = require('loggerjs')('Sockets')
   , App = mongoose.model('App')
   , sys = require('../controllers/system')
   , ResetPassword = mongoose.model('ResetPass')
+  , mailer = require('../controllers/mailer')
 
 var getUserFromSession = function(session, cb) {
   User.findById(session.passport.user, cb)
@@ -32,23 +33,20 @@ var createUser = function(data, socket, session) {
       u.email = data.email
       u.apiKey = u.generateAPIKey(new Date())
       u.role = data.role || 'User'
-      u.requiresChange = true
-      // Generate a reset token
-      var p = new ResetPassword({email: data.email})
-      p.token = p.generateToken(new Date())
+      u.password = u.generatePassword()
       u.save(function(err) {
         if (err) {
           logger.error('Error saving user:', err)
           return socket.emit('createUserError', 'Error creating user')
         } else {
-          p.save(function(err, resetPass) {
+          // Send email
+          mailer.sendNewUserEmail(u.name, u.email, u.password, function(err) {
             if (err) {
-              logger.error('Error creating password token:', err)
-              return socket.emit('createUserError', 'Error creating user')
+              logger.error('Error sending new user email:', err)
+              socket.emit('createUserError', 'User was successfully created, however, the email containing his or her password failed to send.')
             } else {
-              // Send password reset email
-              var token = resetPass.token
-              
+              debug('Successfully sent new user email')
+              return socket.emit('createUserSuccess', 'Successfully created new user.  The user\'s password has been emailed to him or her.')
             }
           })
         }
