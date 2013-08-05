@@ -1,5 +1,6 @@
 - profile = (typeof profile != 'undefined') ? profile : {}
 extends default
+include mixins
 block extraStyles
   link(rel='stylesheet', href='/alertify.js/themes/alertify.core.css')
   link(rel='stylesheet', href='/alertify.js/themes/alertify.default.css')
@@ -37,7 +38,7 @@ block mainContent
       .clearfix
   .mainContent
     .container-fluid
-      h3 Users
+      h3.dt Users
       table.table.table-bordered
         thead
           th Name
@@ -53,6 +54,24 @@ block mainContent
           th Actions
         tbody
   .clearfix
+  .modal.hide.fade.createUserModal
+    .modal-header
+      button(type='button', data-dismiss='modal').close x
+      h3 Create User
+    .modal-body
+      form.form.form-horizontal
+        mixin tf('textName', 'Name')
+        mixin tf('textEmail', 'Email')
+        .control-group
+          label.control-label Role
+          .controls
+            select(name='selectRole')
+              option(value='User') User
+              option(value='Management') Management
+              option(Value='Admin') Admin
+    .modal-footer
+      button(type='button').btn-save.btn.btn-primary Create
+      button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
   .modal.hide.fade.deleteUserModal
     .modal-header
       button(type='button', data-dismiss='modal').close x
@@ -60,6 +79,7 @@ block mainContent
     .modal-body
       p Are you sure you want to delete <span class="user-name"></span>?
       p This cannot be undone.
+      input(type='hidden', name='hiddenID')
     .modal-footer
       button(type='button').btn-delete.btn.btn-danger Delete
       button(type='button', data-dismiss='modal').btn-cancel.btn-primary.btn Cancel
@@ -73,6 +93,7 @@ block mainContent
           label.control-label Name
           .controls
             input(type='text', name='textName', disabled).disabled
+            input(type='hidden', name='hiddenID')
         .control-group
           label.control-label Role
           .controls
@@ -86,8 +107,9 @@ block mainContent
   br
   br
 block extraScripts
-  script(type='text/javascript', src='/DataTables/media/js/jquery.dataTables.js')
-  script(type='text/javascript', src='/alertify.js/lib/alertify.js')
-  script(type='text/javascript', src='/spin.js/spin.js')
-  script(type='text/javascript', src='/js/helper.js')
-  script(type='text/javascript', src='/js/users.js')
+  mixin js('/socket.io/socket.io.js')
+  mixin js('/DataTables/media/js/jquery.dataTables.js')
+  mixin js('/alertify.js/lib/alertify.js')
+  mixin js('/spin.js/spin.js')
+  mixin js('/js/helper.js')
+  mixin js('/js/users.js')
