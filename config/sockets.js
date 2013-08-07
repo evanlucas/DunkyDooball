@@ -18,6 +18,10 @@ var getUserFromSession = function(session, cb) {
 
 var createUser = function(data, socket, session) {
   debug('createUser')
+  // verify that data.name && data.email exist
+  if (!data.hasOwnProperty('name') || !data.hasOwnProperty('email')) {
+    return socket.emit('createUserError', 'Creating a user requires both and email and a name')
+  }
   var user = getUserFromSession(session, function(err, user) {
     if (err || !user) {
       logger.error('Error populating user:', err)
