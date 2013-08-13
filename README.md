@@ -61,7 +61,7 @@ To provide a way to host multiple node applications on a single Mac server
 
 ### logoUrl
 - Your logo URL
-- Defaults to `http://curapps.com/bootstrap/assets/img/logo.png'
+- Defaults to `http://curapps.com/bootstrap/assets/img/logo.png`
 
 ## Installation
 
