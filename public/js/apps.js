@@ -22,6 +22,8 @@ $(document).ready(function() {
     }
   })
   
+  $('.dtbtngroup').append('<button type="button" class="btn btn-primary btn-create"><i class="icon-plus"></i>   New App</button>')
+  
   $('body').on('click', '.btn-stop', function(e) {
     var name = $(this).data('name')
       , self = $(this)
@@ -92,5 +94,54 @@ $(document).ready(function() {
       }
     })
     return false
+  })
+  
+  $('body').on('click', '.btn-create', function(e) {
+    e.preventDefault()
+    $('.createAppModal').modal('show')
+  })
+  
+  $('.btn-save').on('click', function(e) {
+    e.preventDefault()
+    var url = $('input[name=textUrl]')
+    var dir = $('input[name=textDir]')
+    var env = $('.selectEnv')
+    if (url.val() === "") {
+      addErr(url)
+      alertify.error('URL is required')
+      return false
+    }
+    rmErr(url)
+    
+    if (dir.val() === "") {
+      addErr(dir)
+      alertify.error('Directory is required')
+      return false
+    }
+    rmErr(dir)
+    
+    if (env.val() === "na") {
+      addErr(env)
+      alertify.error('Environment is required')
+      return false
+    }
+    rmErr(env)
+    showSpinner()
+    $.post('/api/apps/create', {
+        url: url.val()
+      , dir: dir.val()
+      , env: env.val()
+    }, function(data) {
+      if (data.status && data.status === 'success') {
+        alertify.success(data.msg)
+        setTimeout(function() {
+          dt.fnDraw()
+        }, 300)
+      } else {
+        alertify.error('Error creating app')
+        hideSpinner()
+      }
+    })
+    
   })
 })

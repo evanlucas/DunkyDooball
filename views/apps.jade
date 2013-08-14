@@ -36,6 +36,22 @@ block mainContent
               | Users
       .clearfix
   .mainContent
+    .modal.hide.fade.createAppModal
+      .modal-header
+        button(type='button', data-dismiss='modal').close x
+        h3 Create App
+      .modal-body
+        form.form.form-horizontal
+          mixin tf('textUrl', 'Git URL', 'Git URL')
+          mixin tf('textDir', 'Directory Name', 'Directory Name')
+          select.selectEnv
+            option(value='na') Select Environment
+            option(value='development') Development
+            option(value='test') Test
+            option(value='production') Production
+      .model-footer
+        button(type='button').btn-save.btn.btn-primary Create
+        button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
     .container-fluid
       h3.dt Apps
       table.table.table-bordered
