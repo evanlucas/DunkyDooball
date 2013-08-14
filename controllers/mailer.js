@@ -9,10 +9,23 @@ var nodemailer = require('nodemailer')
  */
 exports.sendNewUserEmail = function(name, email, password, cb) {
   var message = {
-    from: config.supportEmail,
-    to: email,
-    subject: 'Your DunkyDooball account has been created.'
+      from: config.supportEmail
+    , to: email
+    , subject: 'Your DunkyDooball account has been created.'
   };
+  var transport
+  var smtp = config.mailTransport
+  if (smtp.method.toLowerCase() === 'sendmail') {
+    transport = nodemailer.createTransport('Sendmail', smtp.config)
+  } else if (smtp.method.toLowerCase() === 'smtp') {
+    transport = nodemailer.createTransport('SMTP', {
+        service: smtp.service
+      , auth: smtp.config
+    })
+  } else {
+    logger.error('Invalid mail transport method')
+    return cb && cb()
+  }
   
   message.html = [
       '<html>'
