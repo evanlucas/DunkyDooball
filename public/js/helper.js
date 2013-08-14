@@ -195,3 +195,11 @@ var hideSpinner = function() {
     spinner.stop();
   }
 };
+
+function addErr(t) {
+  $(t).closest('.control-group').addClass('error')
+}
+
+function rmErr(t) {
+  $(t).closest('.control-group').removeClass('error')
+}
