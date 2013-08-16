@@ -27,6 +27,7 @@ module.exports = {
     }
 /*    mailTransport: {
       method: 'SMTP',
+      service: 'Mailgun',
       config: {
         auth: {
           user: "",
@@ -61,6 +62,7 @@ module.exports = {
     }
 /*    mailTransport: {
       method: 'SMTP',
+      service: 'Mailgun',
       config: {
         auth: {
           user: "",
@@ -95,6 +97,7 @@ module.exports = {
     }
 /*    mailTransport: {
       method: 'SMTP',
+      service: 'Mailgun',
       config: {
         auth: {
           user: "",
