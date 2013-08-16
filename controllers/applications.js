@@ -416,16 +416,6 @@ Apps.findByName = function(name, cb) {
     if (!app) {
       return cb(errors.errorFromCode('EDINVAPNA'))
     }
-/*
-    logger.info(app)
-    try {
-      var c = ctl.listSync(app.label)
-      app.config = c
-    }
-    catch (e) {
-      app.config = {}
-    }
-*/
     return cb(null, app)
   })
 }
@@ -445,16 +435,6 @@ Apps.findByLabel = function(label, cb) {
     if (!app) {
       return cb(errors.errorFromCode('EDINVJLAB'))
     }
-/*
-    logger.info(app)
-    try {
-      var c = ctl.listSync(app.label)
-      app.config = c
-    }
-    catch (e) {
-      app.config = {}
-    }
-*/
     return cb(null, app)
   })
 }
@@ -528,14 +508,14 @@ Apps.stop = function(name, cb) {
         } else {
           hasErr = false  
         }
-        return cb(null)
+        return cb()
       }
       catch (e) {
         hasErr = true
         return cb(e)
       }
       
-      if (!hasErr) return cb(null)
+      if (!hasErr) return cb()
     })
   })
 }
@@ -610,7 +590,7 @@ Apps.remove = function(name, cb) {
       function(c) {
         self.stop(name, function(err) {
           if (err) logger.error(err)
-          return c(null)
+          return c()
         })
       },
       function(c) {
@@ -620,11 +600,11 @@ Apps.remove = function(name, cb) {
         catch (e) {
           logger.error(e)
         }
-        return c(null)
+        return c()
       },
       function(c) {
         fs.unlinkSync(plistpath)
-        c(null)
+        c()
       },
       function(c) {
         app.remove(c)
