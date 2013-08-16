@@ -9,3 +9,9 @@ mixin tf(name, label, placeholder)
     label.control-label #{label}
     .controls
       input(type='text', name=name, placeholder=placeholder)
+
+mixin pass(name, label, placeholder)
+  .control-group
+    label.control-label #{label}
+    .controls
+      input(type='password', name=name, placeholder=placeholder)
