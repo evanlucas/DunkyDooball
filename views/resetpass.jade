@@ -1,0 +1,49 @@
+extends layouts/default
+include mixins
+
+block mainContent
+  .header
+    .container-fluid
+      .row-fluid
+        img(src=logoUrl).pull-left.logo
+        h3(style='text-align: right;').pull-right Dunky Dooball
+        .spinner_parent.pull-right
+      .clearfix
+      hr
+      ul.large-pills
+        li
+          a(href='/')
+            i.icon-home
+            br
+            | Home
+        li
+          a(href='/network')
+            i.icon-signal
+            br
+            | Network
+        li
+          a(href='/apps')
+            i.icon-sitemap
+            br
+            | Apps
+        - if (profile.role && profile.role === 'Admin')
+          li
+            a(href='/users')
+              i.icon-group
+              br
+              | Users
+      .clearfix
+  .mainContent
+    .container
+      .row-fluid
+        .login
+          form.form-resetpass(action='/resetpass', method='post')
+            h3 Reset Password
+            mixin tf('textEmail', 'Email', 'Email')
+            mixin pass('textCurrentPass', 'Current Password', 'Current Password')
+            mixin pass('textNewPass', 'New Password', 'New Password')
+            mixin pass('textNewPassConfirm', 'Confirm Password', 'Confirm New Password')
+            .control-group
+              button#submitBtn(type='submit').btn.btn-primary.btn-large Reset Password
+
+block extraScripts
