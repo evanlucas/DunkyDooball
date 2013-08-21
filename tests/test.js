@@ -1,6 +1,11 @@
 var should = require('should')
   , assert = require('assert')
+  , env = process.env.NODE_ENV || 'development'
+  , config = require('../config/config')[env]
 
+function revdns(n) {
+  return config.companyID+'.'+n
+}
 describe('DunkyDooball', function() {
   describe('Plist', function() {
     var plist = new (require('../controllers/stplist'))(true);
@@ -22,10 +27,10 @@ describe('DunkyDooball', function() {
     
     describe('getReverseDNS()', function() {
       var apps = [
-        {name: 'Pride', output: 'com.hbc.Pride'},
-        {name: 'Patient Reps', output: 'com.hbc.PatientReps'},
-        {name: 'This is a test', output: 'com.hbc.Thisisatest'},
-        {name: 'This, is, a, test', output: 'com.hbc.Thisisatest'}
+        {name: 'Pride', output: revdns('Pride')},
+        {name: 'Patient Reps', output: revdns('PatientReps')},
+        {name: 'This is a test', output: revdns('Thisisatest')},
+        {name: 'This, is, a, test', output: revdns('Thisisatest')}
       ];
       apps.forEach(function(a) {
         it('Should build reverse DNS: '+a.name, function() {
@@ -37,10 +42,10 @@ describe('DunkyDooball', function() {
     
     describe('getPlistName()', function() {
       var apps = [
-        {name: 'Pride', output: 'com.hbc.Pride.plist'},
-        {name: 'Patient Reps', output: 'com.hbc.PatientReps.plist'},
-        {name: 'This is a test', output: 'com.hbc.Thisisatest.plist'},
-        {name: 'This, is, a, test', output: 'com.hbc.Thisisatest.plist'}
+        {name: 'Pride', output: revdns('Pride')+'.plist'},
+        {name: 'Patient Reps', output: revdns('PatientReps')+'.plist'},
+        {name: 'This is a test', output: revdns('Thisisatest')+'.plist'},
+        {name: 'This, is, a, test', output: revdns('Thisisatest')+'.plist'}
       ];
       
       apps.forEach(function(a) {
