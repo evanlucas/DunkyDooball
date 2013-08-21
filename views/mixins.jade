@@ -5,13 +5,13 @@ mixin css(p)
   link(rel='stylesheet', href=p)
 
 mixin tf(name, label, placeholder)
-  .control-group
-    label.control-label #{label}
-    .controls
-      input(type='text', name=name, placeholder=placeholder)
+  .form-group
+    label.control-label.col-lg-2.col-lg-offset-2 #{label}
+    .col-lg-8
+      input(type='text', name=name, placeholder=placeholder).form-control
 
 mixin pass(name, label, placeholder)
-  .control-group
-    label.control-label #{label}
-    .controls
-      input(type='password', name=name, placeholder=placeholder)
+  .form-group
+    label.control-label.col-lg-2.col-lg-offset-2 #{label}
+    .col-lg-8
+      input(type='password', name=name, placeholder=placeholder).form-control

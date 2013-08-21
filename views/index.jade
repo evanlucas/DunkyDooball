@@ -7,8 +7,8 @@ block extraStyles
   mixin css('/jquery.easy-pie-chart/jquery.easy-pie-chart.css')
 block mainContent
   .header
-    .container-fluid
-      .row-fluid
+    .container
+      .row
         img(src=logoUrl).pull-left.logo
         h3(style='text-align: right;').pull-right Dunky Dooball
       .clearfix
@@ -38,49 +38,47 @@ block mainContent
       .clearfix
   .mainContent
     .container
-      .span12
-        .row
-          .span4.sect
-            h4 Operating System
-            i.icon-apple
-            .value.value-small
-              span(style='font-size: 14px; line-height: 14px;') #{data.hostname} <br/>
-              | #{data.os.ProductVersion} (#{data.os.BuildVersion}) <br/>
-              | #{data.arch} <br/>
-          .span4.sect
-            h4 Processors
-            i.icon-fighter-jet
-            br
-            .value.value-small
-              | #{data.cores} Cores <br/>
-              | #{data.cpuSpeed} GHz <br/>
-          .span4.sect
-            h4 Load Average
-            i.icon-bar-chart
-            br
-            .value.value-small.loadavg #{data.loadavg}
-        .row
-          .span4.sect
-            h4 Node Version
-            i.icon-wrench
-            br
-            .value.value-small #{data.nodeversion}
-          .span4.sect
-            h4 Uptime
-            i.icon-time
-            br
-            .value.value-small #{data.uptime.formatted}
-          .span4.sect
-            h4 Free Memory
-            .chart.memory
-              - percent = (data.memory.freemem / data.memory.totalmem) * 100
-              .percentage(data-percent=percent)
-                span #{percent*100}
-                | %
-              .value.mem.value-small
-                span.freemem #{data.memory.freemem} MB
-                span.divider /
-                span.totalmem #{data.memory.totalmem} MB
+      .col-lg-12
+        .col-lg-4.col-md-4.col-sm-6.sect
+          h4 Operating System
+          i.icon-apple
+          .value.value-small
+            span(style='font-size: 14px; line-height: 14px;') #{data.hostname} <br/>
+            | #{data.os.ProductVersion} (#{data.os.BuildVersion}) <br/>
+            | #{data.arch} <br/>
+        .col-lg-4.col-md-4.col-sm-6.sect
+          h4 Processors
+          i.icon-fighter-jet
+          br
+          .value.value-small
+            | #{data.cores} Cores <br/>
+            | #{data.cpuSpeed} GHz <br/>
+        .col-lg-4.col-md-4.col-sm-6.sect
+          h4 Load Average
+          i.icon-bar-chart
+          br
+          .value.value-small.loadavg #{data.loadavg}
+        .col-lg-4.col-md-4.col-sm-6.sect
+          h4 Node Version
+          i.icon-wrench
+          br
+          .value.value-small #{data.nodeversion}
+        .col-lg-4.col-md-4.col-sm-6.sect
+          h4 Uptime
+          i.icon-time
+          br
+          .value.value-small #{data.uptime.formatted}
+        .col-lg-4.col-md-4.col-sm-6.sect
+          h4 Free Memory
+          .chart.memory
+            - percent = (data.memory.freemem / data.memory.totalmem) * 100
+            .percentage(data-percent=percent)
+              span #{percent*100}
+              | %
+            .value.mem.value-small
+              span.freemem #{data.memory.freemem} MB
+              span.divider /
+              span.totalmem #{data.memory.totalmem} MB
             
 
 block extraScripts

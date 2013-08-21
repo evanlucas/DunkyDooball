@@ -14,7 +14,7 @@ function sortHeaders() {
 
 /* Set the defaults for DataTables initialisation */
 $.extend( true, $.fn.dataTable.defaults, {
-  "sDom": "<'row-fluid'<'span6'ls><'span6'<'righttopdt'<'dtbtngroup'>r<'clearfix'>>>>t<'row-fluid'<'span6'i><'span6'p>>",
+  "sDom": "<'row'<'col-lg-6'ls><'col-lg-6'<'righttopdt'<'dtbtngroup'>r<'clearfix'>>>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
   "sPaginationType": "bootstrap",
   "oLanguage": {
     "sLengthMenu": '<select class="selectpicker">'+
@@ -61,12 +61,10 @@ $.extend( $.fn.dataTableExt.oPagination, {
       };
 
       $(nPaging).append(
-        '<div class="pagination pagination-right">'+
-          '<ul>'+
+        '<ul class="pagination pagination-right pull-right">'+
           '<li class="prev disabled"><a href="#">&larr; </a></li>'+
           '<li class="next disabled"><a href="#"> &rarr; </a></li>'+
-          '</ul>'+
-        '</div>'
+        '</ul>'
       );
       var els = $('a', nPaging);
       $(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
@@ -197,9 +195,9 @@ var hideSpinner = function() {
 };
 
 function addErr(t) {
-  $(t).closest('.control-group').addClass('error')
+  $(t).closest('.form-group').addClass('has-error')
 }
 
 function rmErr(t) {
-  $(t).closest('.control-group').removeClass('error')
+  $(t).closest('.form-group').removeClass('has-error')
 }

@@ -31,11 +31,26 @@ $(document).ready(function() {
     var loadavg = data.loadavg
     var cpuCount = data.cpuCount
     if (loadavg > cpuCount) {
-      $('.loadavg').closest('i').addClass('error').removeClass('warning')
+      $('.loadavg')
+        .closest('.sect')
+        .find('i')
+        .removeClass('text-success')
+        .removeClass('text-warning')
+        .addClass('text-danger')
     } else if (loadavg / 2 > cpuCount) {
-      $('.loadavg').closest('i').addClass('warning').removeClass('error')
+      $('.loadavg')
+        .closest('.sect')
+        .find('i')
+        .removeClass('text-danger')
+        .removeClass('text-success')
+        .addClass('text-warning')
     } else {
-      $('.loadavg').closest('i').removeClass('warning').removeClass('error')
+      $('.loadavg')
+        .closest('.sect')
+        .find('i')
+        .removeClass('text-warning')
+        .removeClass('text-danger')
+        .addClass('text-success')
     }
     $('.loadavg').text(loadavg)
   })

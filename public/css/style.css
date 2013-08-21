@@ -113,6 +113,7 @@ span.divider {
 
 .sect {
   margin-bottom: 20px;
+  height: 200px;
 }
 
 i.error {
@@ -168,6 +169,7 @@ i.giganticIcon {
   margin: 5px;
 }
 
+/*
 .dataTables_length {
   margin-bottom: 5px;
 }
@@ -183,6 +185,7 @@ i.giganticIcon {
 .righttopdt {
   margin-right: 5%;
 }
+*/
 
 /*
 .dataTables_info {
@@ -194,9 +197,11 @@ i.giganticIcon {
   margin: 0;
 }
 
+/*
 h3.dt {
   margin-left: 2.5%;
 }
+*/
 
 .btn-stop,
 .btn-start,
@@ -244,4 +249,8 @@ th {
   margin-right: auto;
   text-align: center;
   line-height: 1.1;
+}
+
+.dtbtngroup button {
+  margin-bottom: 5px;
 }

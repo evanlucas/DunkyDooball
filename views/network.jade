@@ -4,8 +4,8 @@ extends default
 
 block mainContent
   .header
-    .container-fluid
-      .row-fluid
+    .container
+      .row
         img(src=logoUrl).pull-left.logo
         h3(style='text-align: right;').pull-right Dunky Dooball
       .clearfix
@@ -35,7 +35,7 @@ block mainContent
       .clearfix
   .mainContent
     .container
-      .span12
+      .col-lg-12
         h3 Network
         table.table.table-bordered
           - each ip, index in data

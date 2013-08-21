@@ -377,7 +377,7 @@ function statusForApp(app) {
   if (app.config && app.config.PID) {
     return '<span class="label label-info">Running</span>'
   }
-  return '<span class="label label-important">Not Running</span>'
+  return '<span class="label label-danger">Not Running</span>'
 }
 
 function actionButtonsForApp(app) {

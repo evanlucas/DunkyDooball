@@ -2,26 +2,29 @@ extends default
 
 block mainContent
   .header
-    .container-fluid
-      .row-fluid
+    .container
+      .row
         img(src=logoUrl).pull-left.logo
         h3(style='text-align: right;').pull-right Dunky Dooball
       .clearfix
       hr
   .container
-    .row-fluid
-      .login
-        form.form-signin(action='/login', method='post')
-          h3 Login
-          .control-group
-            label.control-label Email
-            .controls
-              input(type='text', placeholder='Email', name='username').input-block-level
-          .control-group
-            label.control-label Password
-            .controls
-              input(type='password', placeholder='Password', name='password').input-block-level
-          .control-group
-            button#submitBtn(type='submit').btn.btn-primary.btn-large Login
+    .row
+      .col-lg-12
+        .login
+          form.form.form-horizontal.form-signin(action='/login', method='post')
+            h3 Login
+            .form-group
+              label.control-label.col-lg-2.col-lg-offset-1 Email
+              .col-lg-4.col-md-6
+                input(type='text', placeholder='Email', name='username').input-block-level.form-control
+            .form-group
+              label.control-label.col-lg-2.col-lg-offset-1 Password
+              .col-lg-4.col-md-6
+                input(type='password', placeholder='Password', name='password').input-block-level.form-control
+            .form-group
+              .col-lg-2.col-lg-offset-1
+              .col-lg-4.col-md-6
+                button#submitBtn(type='submit').btn.btn-primary.btn-large Login
 
 block extraScripts

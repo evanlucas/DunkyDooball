@@ -1,12 +1,17 @@
 - profile = (typeof profile != 'undefined') ? profile : {}
+
 extends default
+
+include mixins
+
 block extraStyles
-  link(rel='stylesheet', href='/alertify.js/themes/alertify.core.css')
-  link(rel='stylesheet', href='/alertify.js/themes/alertify.default.css')
+  mixin css('/alertify.js/themes/alertify.core.css')
+  mixin css('/alertify.js/themes/alertify.default.css')
+
 block mainContent
   .header
-    .container-fluid
-      .row-fluid
+    .container
+      .row
         img(src=logoUrl).pull-left.logo
         h3(style='text-align: right;').pull-right Dunky Dooball
         .spinner_parent.pull-right
@@ -36,23 +41,28 @@ block mainContent
               | Users
       .clearfix
   .mainContent
-    .modal.hide.fade.createAppModal
-      .modal-header
-        button(type='button', data-dismiss='modal').close x
-        h3 Create App
-      .modal-body
-        form.form.form-horizontal
-          mixin tf('textUrl', 'Git URL', 'Git URL')
-          mixin tf('textDir', 'Directory Name', 'Directory Name')
-          select.selectEnv
-            option(value='na') Select Environment
-            option(value='development') Development
-            option(value='test') Test
-            option(value='production') Production
-      .model-footer
-        button(type='button').btn-save.btn.btn-primary Create
-        button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
-    .container-fluid
+    .modal.fade.createAppModal
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type='button', data-dismiss='modal').close x
+            h3 Create App
+          .modal-body
+            form.form.form-horizontal
+              mixin tf('textUrl', 'Git URL', 'Git URL')
+              mixin tf('textDir', 'Directory Name', 'Directory Name')
+              .form-group
+                label.col-lg-2.col-lg-offset-2
+                .col-lg-8
+                  select.selectEnv.form-control
+                    option(value='na') Select Environment
+                    option(value='development') Development
+                    option(value='test') Test
+                    option(value='production') Production
+          .modal-footer
+            button(type='button').btn-save.btn.btn-primary Create
+            button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
+    .container
       h3.dt Apps
       table.table.table-bordered
         thead
@@ -70,10 +80,11 @@ block mainContent
   .clearfix
   br
   br
+
 block extraScripts
-  script(type='text/javascript', src='/socket.io/socket.io.js')
-  script(type='text/javascript', src='/DataTables/media/js/jquery.dataTables.js')
-  script(type='text/javascript', src='/alertify.js/lib/alertify.js')
-  script(type='text/javascript', src='/spin.js/spin.js')
-  script(type='text/javascript', src='/js/helper.js')
-  script(type='text/javascript', src='/js/apps.js')
+  mixin js('/socket.io/socket.io.js')
+  mixin js('/DataTables/media/js/jquery.dataTables.js')
+  mixin js('/alertify.js/lib/alertify.js')
+  mixin js('/spin.js/spin.js')
+  mixin js('/js/helper.js')
+  mixin js('/js/apps.js')

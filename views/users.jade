@@ -6,8 +6,8 @@ block extraStyles
   link(rel='stylesheet', href='/alertify.js/themes/alertify.default.css')
 block mainContent
   .header
-    .container-fluid
-      .row-fluid
+    .container
+      .row
         img(src=logoUrl).pull-left.logo
         h3(style='text-align: right;').pull-right Dunky Dooball
         .spinner_parent.pull-right
@@ -37,7 +37,7 @@ block mainContent
               | Users
       .clearfix
   .mainContent
-    .container-fluid
+    .container
       h3.dt Users
       table.table.table-bordered
         thead
@@ -54,58 +54,65 @@ block mainContent
           th Actions
         tbody
   .clearfix
-  .modal.hide.fade.createUserModal
-    .modal-header
-      button(type='button', data-dismiss='modal').close x
-      h3 Create User
-    .modal-body
-      form.form.form-horizontal
-        mixin tf('textName', 'Name', 'Name')
-        mixin tf('textEmail', 'Email', 'Email')
-        .control-group
-          label.control-label Role
-          .controls
-            select(name='selectRole')
-              option(value='User') User
-              option(value='Management') Management
-              option(Value='Admin') Admin
-    .modal-footer
-      button(type='button').btn-save.btn.btn-primary Create
-      button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
-  .modal.hide.fade.deleteUserModal
-    .modal-header
-      button(type='button', data-dismiss='modal').close x
-      h3 Delete User
-    .modal-body
-      p Are you sure you want to delete <span class="user-name"></span>?
-      p This cannot be undone.
-      input(type='hidden', name='hiddenID')
-    .modal-footer
-      button(type='button').btn-delete.btn.btn-danger Delete
-      button(type='button', data-dismiss='modal').btn-cancel.btn-primary.btn Cancel
-  .modal.hide.fade.editUserModal
-    .modal-header
-      button(type='button', data-dismiss='modal').close x
-      h3 Edit User
-    .modal-body
-      form.form.form-horizontal
-        .control-group
-          label.control-label Name
-          .controls
-            input(type='text', name='textName', disabled).disabled
-            input(type='hidden', name='hiddenID')
-        .control-group
-          label.control-label Role
-          .controls
-            select(name='selectRole')
-              option(value='User') User
-              option(value='Management') Management
-              option(value='Admin') Admin
-    .modal-footer
-      button(type='button').btn-save.btn.btn-primary Save
-      button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
   br
   br
+  .modal.fade.createUserModal
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type='button', data-dismiss='modal').close x
+          h3 Create User
+        .modal-body
+          form.form.form-horizontal
+            mixin tf('textName', 'Name', 'Name')
+            mixin tf('textEmail', 'Email', 'Email')
+            .form-group
+              label.control-label.col-lg-2.col-lg-offset-2 Role
+              .col-lg-8
+                select(name='selectRole').form-control
+                  option(value='User') User
+                  option(value='Management') Management
+                  option(Value='Admin') Admin
+        .modal-footer
+          button(type='button').btn-save.btn.btn-primary Create
+          button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
+  .modal.fade.deleteUserModal
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type='button', data-dismiss='modal').close x
+          h3 Delete User
+        .modal-body
+          p Are you sure you want to delete <span class="user-name"></span>?
+          p This cannot be undone.
+          input(type='hidden', name='hiddenID')
+        .modal-footer
+          button(type='button').btn-delete.btn.btn-danger Delete
+          button(type='button', data-dismiss='modal').btn-cancel.btn-primary.btn Cancel
+  .modal.fade.editUserModal
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type='button', data-dismiss='modal').close x
+          h3 Edit User
+        .modal-body
+          form.form.form-horizontal
+            .form-group
+              label.control-label.col-lg-2.col-lg-offset-2 Name
+              .col-lg-8
+                input(type='text', name='textName', disabled).disabled.form-control
+                input(type='hidden', name='hiddenID')
+            .form-group
+              label.control-label.col-lg-2.col-lg-offset-2 Role
+              .col-lg-8
+                select(name='selectRole').form-control
+                  option(value='User') User
+                  option(value='Management') Management
+                  option(value='Admin') Admin
+        .modal-footer
+          button(type='button').btn-save.btn.btn-primary Save
+          button(type='button', data-dismiss='modal').btn-cancel.btn.btn-danger Cancel
+
 block extraScripts
   mixin js('/socket.io/socket.io.js')
   mixin js('/DataTables/media/js/jquery.dataTables.js')

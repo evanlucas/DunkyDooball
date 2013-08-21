@@ -1,0 +1,22 @@
+{
+  "name": "bootstrap",
+  "main": [
+    "./dist/js/bootstrap.js",
+    "./dist/css/bootstrap.css"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.9.0"
+  },
+  "homepage": "https://github.com/evanlucas/bootstrap",
+  "_release": "38487af4b6",
+  "_resolution": {
+    "type": "commit",
+    "commit": "38487af4b62fa24c1629a96ea591c6e9493f93eb"
+  },
+  "_source": "https://github.com/evanlucas/bootstrap.git",
+  "_target": "38487af4b62fa24c1629a96ea591c6e9493f93eb",
+  "_direct": true
+}

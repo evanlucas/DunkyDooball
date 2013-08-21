@@ -22,8 +22,25 @@ $(document).ready(function() {
     }
   })
   
-  $('.dtbtngroup').append('<button type="button" class="btn btn-primary btn-create"><i class="icon-plus"></i>   New App</button>')
+  $('.dtbtngroup').append('<button type="button" class="btn btn-primary btn-create pull-right"><i class="icon-plus"></i>   New App</button>')
   
+  $('body').on('click', '.btn-remove', function(e) {
+    var name = $(this).data('name')
+      , self = $(this)
+    showSpinner()
+    $.post('/api/apps/'+name+'/remove', function(data) {
+      if (data.status && data.status === 'success') {
+        alertify.success(data.msg)
+        setTimeout(function() {
+          dt.fnDraw()
+        }, 300)
+      } else {
+        alertify.error('Error removing app')
+        hideSpinner()
+      }
+    })
+    return false
+  })
   $('body').on('click', '.btn-stop', function(e) {
     var name = $(this).data('name')
       , self = $(this)
