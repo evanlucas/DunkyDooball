@@ -212,7 +212,7 @@ STPlist.prototype.buildPlistObject = function(appName, scriptPath, environment, 
   if (label == "") {
     var e = errors.errorFromCode('EDINVJLAB');
     logger.error(e);
-     return cb(e);
+    return cb(e);
   }
   
   /*!
@@ -229,7 +229,7 @@ STPlist.prototype.buildPlistObject = function(appName, scriptPath, environment, 
   
   if (!fs.existsSync(scriptPath)) {
     var e = errors.errorFromCode('EDSCRNOEX');
-    logger.log(e);
+    logger.error(e);
     return cb(e);
   }
 
