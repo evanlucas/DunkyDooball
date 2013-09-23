@@ -254,3 +254,10 @@ th {
 .dtbtngroup button {
   margin-bottom: 5px;
 }
+
+/*
+ * Hack for shifting body content when a modal is loaded
+ */
+.modal-open, .modal-open .navbar-fixed-top .header {
+  margin-right: 0 !important;
+}
