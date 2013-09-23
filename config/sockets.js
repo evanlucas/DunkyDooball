@@ -12,56 +12,77 @@ var logger = require('loggerjs')('Sockets')
   , ResetPassword = mongoose.model('ResetPass')
   , mailer = require('../controllers/mailer')
 
-var getUserFromSession = function(session, cb) {
-  User.findById(session.passport.user, cb)
+var getUserFromSession = function(id, cb) {
+  User.findById(id, cb)
 }
 
-var createUser = function(data, socket, session) {
-  debug('createUser')
-  // verify that data.name && data.email exist
-  if (!data.hasOwnProperty('name') || !data.hasOwnProperty('email')) {
-    return socket.emit('createUserError', 'Creating a user requires both and email and a name')
-  }
-  var user = getUserFromSession(session, function(err, user) {
-    if (err || !user) {
-      logger.error('Error populating user:', err)
-      return socket.emit('createUserError', 'Error creating user')
+var methods = ['createUser', 'editUser', 'deleteUser', 'grabData']
+
+module.exports = exports = SOCK
+
+function SOCK(io, masterIO) {
+  this.io = io
+  this.masterIO = masterIO
+  var self = this
+  io.on('connection', function(err, socket, session) {
+    if (err) {
+      logger.error('Error connecting to socket: ', err)
     } else {
-      if (user.role !== 'Admin' && data.role === 'Admin') {
-        // A non-admin cannot change an Admin's role
-        logger.error('Error creating user:', user, 'is trying to create an admin')
-        return socket.emit('createUserError', 'You are not authorized to create an admin')
-      }
-      var u = new User()
-      u.name = data.name
-      u.email = data.email
-      u.apiKey = u.generateAPIKey(new Date())
-      u.role = data.role || 'User'
-      u.password = u.generatePassword()
-      u.save(function(err) {
-        if (err) {
-          logger.error('Error saving user:', err)
-          return socket.emit('createUserError', 'Error creating user')
-        } else {
-          // Send email
-          mailer.sendNewUserEmail(u.name, u.email, u.password, function(err) {
-            if (err) {
-              logger.error('Error sending new user email:', err)
-              socket.emit('createUserError', 'User was successfully created, however, the email containing his or her password failed to send.')
-            } else {
-              debug('Successfully sent new user email')
-              return socket.emit('createUserSuccess', 'Successfully created new user.  The user\'s password has been emailed to him or her.')
-            }
-          })
-        }
+      var user = session.passport.user
+      debug('User: ['+user+']')
+      methods.forEach(function(method) {
+        socket.on(method, function(data) {
+          return self[method](data, socket, user, masterIO)
+        })
       })
     }
   })
 }
 
-var editUser = function(data, socket, session) {
+SOCK.prototype.createUser = function(data, socket, session) {
+  debug('createUser')
+  var self = this
+  if (!data.hasOwnProperty('name') || !data.hasOwnProperty('email')) {
+    return socket.emit('createUserError', 'Creating a user requires both an email and a name')
+  } else {
+    getUserFromSession(session, function(err, user) {
+      if (err || !user) {
+        logger.error('Error finding user: ', err)
+        return socket.emit('createUserError', 'Error creating user')
+      } else {
+        if (user.role !== 'Admin' && data.role === 'Admin') {
+          logger.error('Error creating user: ', user, 'is trying to create an admin')
+          return socket.emit('createUserError', 'You are not authorized to create an admin')
+        }
+        var u = new User()
+        u.name = data.name
+        u.email = data.email
+        u.createdBy = user
+        u.apiKey = u.generateAPIKey(new Date())
+        u.role = data.role || 'User'
+        u.password = u.generatePassword(new Date())
+        u.save(function(err) {
+          if (err) {
+            logger.error('Error creating user: ', err)
+            return socket.emit('createUserError', 'Error creating user')
+          } else {
+            mailer.sendNewUserEmail(u.name, u.email, u.password, function(err) {
+              if (err) {
+                logger.error('Error sending email: ', err)
+              }
+            })
+            return socket.emit('createUserSuccess', 'Successfully created user')
+          }
+        })
+      }
+    })
+  }
+}
+
+SOCK.prototype.editUSer = function(data, socket, session) {
   debug('editUser')
-  var user = getUserFromSession(session, function(err, user) {
+  var self = this
+  getUserFromSession(session, function(err, user) {
     if (err || !user) {
       logger.error('Error populating user:', err)
       return socket.emit('editUserError', 'Error editing user')
@@ -73,19 +94,19 @@ var editUser = function(data, socket, session) {
       }
       User.findByIdAndUpdate(data.id, { $set: { role: data.role }}, function(err, u) {
         if (err) {
-          logger.error('Error updating user:', err)
+          logger.error('Error updating user: ', err)
           return socket.emit('editUserError', 'Error editing user')
         } else {
           socket.emit('editUserSuccess', 'Successfully edited user')
         }
       })
-    }    
+    }
   })
 }
 
-var deleteUser = function(data, socket, session) {
+SOCK.prototype.deleteUser = function(data, socket, session) {
   debug('deleteUser')
-  var user = getUserFromSession(session, function(err, user) {
+  getUserFromSession(session, function(err, user) {
     if (err || !user) {
       logger.error('Error populating user:', err)
       return socket.emit('deleteUserError', 'Error deleting user')
@@ -107,7 +128,7 @@ var deleteUser = function(data, socket, session) {
   })
 }
 
-var grabData = function(socket, session) {
+SOCK.prototype.grabData = function(data, socket, session) {
   var data = {
       totalmem: sys.getTotalMem()
     , freemem: sys.getFreeMem().toFixed(0)
@@ -115,32 +136,4 @@ var grabData = function(socket, session) {
     , cpuCount: sys.getCPUCount()
   };
   socket.emit('grabDataSuccess', data)
-}
-
-module.exports = function(io) {
-  io.on('connection', function(err, socket, session) {
-    if (err) {
-      logger.error('Error connecting to socket:', err)
-    } else {
-      debug('Successfully connected to socket')
-      debug('User: ['+session.passport.user+']')
-      
-/*
-      socket.on('createUser', function(data) {
-        
-      })
-*/
-      socket.on('grabData', function() {
-        return grabData(socket, session)
-      })
-      
-      socket.on('deleteUser', function(data) {
-        return deleteUser(data, socket, session)
-      })
-      
-      socket.on('editUser', function(data) {
-        return editUser(data, socket, session)
-      })
-    }
-  })
 }
