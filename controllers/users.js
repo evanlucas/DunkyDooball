@@ -201,7 +201,6 @@ Users.getUsersUI = function(req, res) {
         })
         output.aaData = aaData
         output.sEcho = Number(req.param('sEcho'))
-        logger.info('aaData:', aaData)
         return res.send(200, output)
       })
     })
