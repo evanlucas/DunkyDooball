@@ -17,7 +17,7 @@ $.extend( true, $.fn.dataTable.defaults, {
   "sDom": "<'row'<'col-lg-6'ls><'col-lg-6'<'righttopdt'<'dtbtngroup'>r<'clearfix'>>>>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
   "sPaginationType": "bootstrap",
   "oLanguage": {
-    "sLengthMenu": '<select class="selectpicker">'+
+    "sLengthMenu": '<select class="selectpicker form-control">'+
       '<option value="10">10 records per page</option>'+
       '<option value="25">25 records per page</option>'+
       '<option value="50">50 records per page</option>'+
