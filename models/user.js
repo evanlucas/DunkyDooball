@@ -36,6 +36,7 @@ UserSchema.path('email').validate(function(e) {
 })
 
 UserSchema.pre('save', function(next) {
+  this.email = this.email.toLowerCase()
   if (!this.isNew) return next()
   if (!validateValue(this.password)) return next(new Error('Invalid password'))
   next()
