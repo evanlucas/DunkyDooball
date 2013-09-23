@@ -104,7 +104,7 @@ socketclient
      */  
     server.listen(port)
     
-    require('./config/sockets')(socks)
+    new (require('./config/sockets'))(socks, io)
     
     logger.info('['+env+'] - Listening on port ['+port+']')
   })
