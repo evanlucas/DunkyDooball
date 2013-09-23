@@ -149,7 +149,7 @@ module.exports = function(app, proxyServer, socketclient, passport) {
   /**
    * Application related API routes
    */
-  var api = (require('../controllers/api'))
+  var api = require('../controllers/api')
   api.setServer(proxyServer)
   api.setSocketClient(socketclient)
   
