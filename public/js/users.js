@@ -89,12 +89,12 @@ $(document).ready(function() {
     $('.createUserModal select[name=selectRole]').val('User')
   })
   
-  $('.deleteUserModal .btn-delete').on('click', function(e) {
+  $('.deleteUserModal .btn-deleteUser').on('click', function(e) {
     var id = $('.deleteUserModal input[name=hiddenID]').val()
+    $('.deleteUserModal').modal('hide')
     socket.emit('deleteUser', {
       id: id
     })
-    $('.deleteUserModal').modal('hide')
   })
   
   $('.deleteUserModal').on('hide', function() {
