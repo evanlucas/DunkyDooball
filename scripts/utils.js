@@ -21,7 +21,8 @@ utils.isInstalled = function() {
 }
 
 utils.writeConfig = function(env) {
-  var config = require('../config/config')[env]
+  var confPath = path.resolve(__dirname, '../config/config.js')
+  var config = require(confPath)[env]
   var p = {
       'Label': appName
     , 'ProgramArguments': [
@@ -156,4 +157,16 @@ utils.status = function() {
     table.push(['Socket Server', (socketStatus.PID) ? 'Running'.magenta : 'Not Running'.red])
   }
   console.log(table.toString())
+}
+
+utils.createAdmin = function(email, name, password, cb) {
+  var user = {
+      email    : email
+    , name     : name
+    , password : password
+    , role     : 'Admin'
+  };
+  var Seeder = require('./seed')
+  var seeder = new Seeder(user)
+  seeder.save(cb)
 }

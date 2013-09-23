@@ -21,11 +21,41 @@ module.exports = function(grunt) {
     },
     
     prompt: {
+      seed: {
+        options: {
+          questions: [
+            {
+              config: 'name',
+              type: 'input',
+              message: 'Enter user\'s name',
+              validate: function(u) {
+                return u.length && u.length > 0 || 'Name cannot be blank'
+              }
+            },
+            {
+              config: 'email',
+              type: 'input',
+              message: 'Enter user\'s email',
+              validate: function(e) {
+                return (e.indexOf('@') !== -1) || 'Invalid email address'
+              }
+            },
+            {
+              config: 'pass',
+              type: 'password',
+              message: 'Enter user\'s password',
+              validate: function(p) {
+                return p.length && p.length > 0 || 'Password cannot be blank'
+              }
+            }
+          ]
+        }
+      },
       install: {
         options: {
           questions: [
             {
-              config: 'install.environment',
+              config: 'environment',
               type: 'list',
               message: 'Select your environment',
               choices: [
@@ -120,11 +150,34 @@ module.exports = function(grunt) {
     grunt.log.ok()
   })
   
-  grunt.registerTask('install', 'Installs the servers', function() {
+  grunt.registerTask('installWithEnv', 'Installs the servers', function() {
     checkRoot()
     grunt.log.writeln('Installing............... ')
-    var env = grunt.option('install.environment')
+    var env = grunt.config('environment')
+    var d = grunt.config('environment')
     utils.writeConfig(env)
     grunt.log.ok()
   })
+  
+  grunt.registerTask('createAdmin', 'Creates an admin user', function() {
+    grunt.log.write('Creating admin........... ')
+    var name = grunt.config('name')
+      , email = grunt.config('email')
+      , pass = grunt.config('pass')
+      , done = this.async()
+    
+    utils.createAdmin(email, name, pass, function(err, user) {
+      if (err) {
+        grunt.fail.fatal(err)
+      } else {
+        grunt.log.ok()
+        grunt.log.writeln('API Key: ', user.apiKey)
+        done()
+      }
+    })
+  })
+  
+  grunt.registerTask('create-admin', ['prompt:seed', 'createAdmin'])
+  
+  grunt.registerTask('install', ['prompt:install', 'installWithEnv'])
 }
